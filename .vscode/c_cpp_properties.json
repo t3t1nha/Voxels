@@ -3,7 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/libs/imgui",
+                "${workspaceFolder}/libs/imgui/backends"
             ],
             "defines": []
         }

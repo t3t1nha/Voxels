@@ -83,20 +83,132 @@ CMakeFiles/VoxelEngine.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VoxelEngine.dir/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/brunoteixiera/Desktop/Voxels/main.cpp -o CMakeFiles/VoxelEngine.dir/main.cpp.s
 
+CMakeFiles/VoxelEngine.dir/Frustum.cpp.o: CMakeFiles/VoxelEngine.dir/flags.make
+CMakeFiles/VoxelEngine.dir/Frustum.cpp.o: /home/brunoteixiera/Desktop/Voxels/Frustum.cpp
+CMakeFiles/VoxelEngine.dir/Frustum.cpp.o: CMakeFiles/VoxelEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/VoxelEngine.dir/Frustum.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VoxelEngine.dir/Frustum.cpp.o -MF CMakeFiles/VoxelEngine.dir/Frustum.cpp.o.d -o CMakeFiles/VoxelEngine.dir/Frustum.cpp.o -c /home/brunoteixiera/Desktop/Voxels/Frustum.cpp
+
+CMakeFiles/VoxelEngine.dir/Frustum.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VoxelEngine.dir/Frustum.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/brunoteixiera/Desktop/Voxels/Frustum.cpp > CMakeFiles/VoxelEngine.dir/Frustum.cpp.i
+
+CMakeFiles/VoxelEngine.dir/Frustum.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VoxelEngine.dir/Frustum.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/brunoteixiera/Desktop/Voxels/Frustum.cpp -o CMakeFiles/VoxelEngine.dir/Frustum.cpp.s
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.o: CMakeFiles/VoxelEngine.dir/flags.make
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.o: /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui.cpp
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.o: CMakeFiles/VoxelEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.o -MF CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.o.d -o CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.o -c /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui.cpp
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui.cpp > CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.i
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui.cpp -o CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.s
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.o: CMakeFiles/VoxelEngine.dir/flags.make
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.o: /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_draw.cpp
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.o: CMakeFiles/VoxelEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.o -MF CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.o.d -o CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.o -c /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_draw.cpp
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_draw.cpp > CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.i
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_draw.cpp -o CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.s
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.o: CMakeFiles/VoxelEngine.dir/flags.make
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.o: /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_tables.cpp
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.o: CMakeFiles/VoxelEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.o -MF CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.o.d -o CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.o -c /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_tables.cpp
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_tables.cpp > CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.i
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_tables.cpp -o CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.s
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.o: CMakeFiles/VoxelEngine.dir/flags.make
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.o: /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_widgets.cpp
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.o: CMakeFiles/VoxelEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.o -MF CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.o.d -o CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.o -c /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_widgets.cpp
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_widgets.cpp > CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.i
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_widgets.cpp -o CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.s
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o: CMakeFiles/VoxelEngine.dir/flags.make
+CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o: /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_glfw.cpp
+CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o: CMakeFiles/VoxelEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o -MF CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o.d -o CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o -c /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_glfw.cpp
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_glfw.cpp > CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.i
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_glfw.cpp -o CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.s
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/VoxelEngine.dir/flags.make
+CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o: /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_opengl3.cpp
+CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/VoxelEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o -MF CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o.d -o CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o -c /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_opengl3.cpp
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_opengl3.cpp > CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.i
+
+CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_opengl3.cpp -o CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.s
+
 # Object files for target VoxelEngine
 VoxelEngine_OBJECTS = \
-"CMakeFiles/VoxelEngine.dir/main.cpp.o"
+"CMakeFiles/VoxelEngine.dir/main.cpp.o" \
+"CMakeFiles/VoxelEngine.dir/Frustum.cpp.o" \
+"CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.o" \
+"CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.o" \
+"CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.o" \
+"CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.o" \
+"CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o" \
+"CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o"
 
 # External object files for target VoxelEngine
 VoxelEngine_EXTERNAL_OBJECTS =
 
 VoxelEngine: CMakeFiles/VoxelEngine.dir/main.cpp.o
+VoxelEngine: CMakeFiles/VoxelEngine.dir/Frustum.cpp.o
+VoxelEngine: CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.o
+VoxelEngine: CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.o
+VoxelEngine: CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.o
+VoxelEngine: CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.o
+VoxelEngine: CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o
+VoxelEngine: CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o
 VoxelEngine: CMakeFiles/VoxelEngine.dir/build.make
 VoxelEngine: /usr/lib/x86_64-linux-gnu/libGL.so
 VoxelEngine: /usr/lib/x86_64-linux-gnu/libglfw.so.3.3
 VoxelEngine: /usr/lib/x86_64-linux-gnu/libGLEW.so
 VoxelEngine: CMakeFiles/VoxelEngine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable VoxelEngine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable VoxelEngine"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/VoxelEngine.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -1,8 +1,50 @@
-// Compile --- g++ main.cpp -o voxels -lGLEW -lglfw -lGL -lGLU -lm -lXrandr -lXi -lX11 -lXxf86vm -lpthread
 #include "Common.h"
 #include "Camera.h"
 #include "Chunk.h"
 #include "InfiniteWorld.h"
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
+// Initialize ImGui (after GLFW/GLEW init)
+void initImGui(GLFWwindow* window) {
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui::StyleColorsDark();
+}
+
+// Render UI overlay
+void renderUI(const Camera& camera, float fps) {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    // Create a transparent overlay window
+    ImGui::SetNextWindowBgAlpha(0.3f);
+    ImGui::Begin("Debug Info", nullptr, 
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_AlwaysAutoResize);
+
+    // Display camera position
+    ImGui::Text("Position: (%.1f, %.1f, %.1f)", 
+        camera.position.x, 
+        camera.position.y, 
+        camera.position.z);
+
+    // Display FPS
+    ImGui::Text("FPS: %.1f", fps);
+
+    // Chunk coordinates
+    ChunkCoord coord = camera.getCurrentChunkCoord();
+    ImGui::Text("Chunk: [%d, %d]", coord.x, coord.z);
+
+    ImGui::End();
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
 
 // Noise functions for terrain generation
 float noise(int x, int z, int seed = 12345) {
@@ -318,9 +360,25 @@ void InfiniteWorld::unloadDistantChunks(ChunkCoord playerChunk) {
     }
 }
 
-void InfiniteWorld::render() {
-    for (auto& pair : chunks) {
-        pair.second->render();
+void InfiniteWorld::render(const glm::mat4& viewProj) {
+    frustum.update(viewProj);
+    
+    for (auto& [coord, chunk] : chunks) {
+        glm::vec3 min(
+            coord.x * CHUNK_SIZE,
+            0,
+            coord.z * CHUNK_SIZE
+        );
+        
+        glm::vec3 max(
+            min.x + CHUNK_SIZE,
+            CHUNK_HEIGHT,
+            min.z + CHUNK_SIZE
+        );
+
+        if (frustum.isBoxVisible(min, max)) {
+            chunk->render();
+        }
     }
 }
 
@@ -444,6 +502,11 @@ void processInput(GLFWwindow* window) {
         camera.processKeyboard(4, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         camera.processKeyboard(5, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
+        static bool showUI = true;
+        showUI = !showUI;
+        ImGui::GetIO().WantCaptureKeyboard = showUI;
+    }
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -505,6 +568,8 @@ int main() {
         return -1;
     }
     
+    initImGui(window);
+
     // Enable OpenGL features
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -531,6 +596,7 @@ int main() {
     std::cout << "Space - Move up" << std::endl;
     std::cout << "Shift - Move down" << std::endl;
     std::cout << "Mouse - Look around" << std::endl;
+    std::cout << "F1 - Toogle Debug Menu" << std::endl;
     std::cout << "ESC - Exit" << std::endl;
     std::cout << std::endl;
     
@@ -539,7 +605,13 @@ int main() {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-        
+
+        // Calculate FPS
+        static float lastTime = 0.0f;
+        float currentTime = glfwGetTime();
+        float fps = 1.0f / (currentTime - lastTime);
+        lastTime = currentTime;
+
         processInput(window);
         
         // Update world
@@ -552,8 +624,9 @@ int main() {
         
         // Set matrices
         mat4 model = mat4(1.0f);
-        mat4 view = camera.getViewMatrix();
-        mat4 projection = perspective(radians(45.0f), 1200.0f / 800.0f, 0.1f, 1000.0f);
+        glm::mat4 view = camera.getViewMatrix();
+        glm::mat4 projection = perspective(radians(45.0f), 1200.0f / 800.0f, 0.1f, 1000.0f);
+        glm::mat4 viewProj = projection * view;
         
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, value_ptr(model));
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, value_ptr(view));
@@ -562,13 +635,23 @@ int main() {
         vec3 lightPos = camera.position + vec3(100.0f, 100.0f, 100.0f);
         glUniform3fv(glGetUniformLocation(shaderProgram, "lightPos"), 1, value_ptr(lightPos));
         
+        // Debug print
+        std::cout << "ViewProj Matrix:\n";
+        for (int i = 0; i < 4; i++) {
+        std::cout << viewProj[i].x << " " << viewProj[i].y << " " << viewProj[i].z << " " << viewProj[i].w << "\n";
+}
+
         // Render the infinite world
-        world->render();
+        world->render(viewProj);
+
+        // Then render UI on top
+        renderUI(camera, fps);
         
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    
+
     delete world;
     glfwTerminate();
     return 0;

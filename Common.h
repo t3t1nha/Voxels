@@ -16,7 +16,7 @@ using namespace glm;
 // Constants
 const int CHUNK_SIZE = 16;
 const int CHUNK_HEIGHT = 64;
-const int RENDER_DISTANCE = 8;
+const int RENDER_DISTANCE = 20;
 const float VOXEL_SIZE = 1.0f;
 
 // Voxel types

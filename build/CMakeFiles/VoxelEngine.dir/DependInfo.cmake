@@ -8,6 +8,13 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/brunoteixiera/Desktop/Voxels/Frustum.cpp" "CMakeFiles/VoxelEngine.dir/Frustum.cpp.o" "gcc" "CMakeFiles/VoxelEngine.dir/Frustum.cpp.o.d"
+  "/home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_glfw.cpp" "CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o" "gcc" "CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_glfw.cpp.o.d"
+  "/home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_opengl3.cpp" "CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o" "gcc" "CMakeFiles/VoxelEngine.dir/libs/imgui/backends/imgui_impl_opengl3.cpp.o.d"
+  "/home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui.cpp" "CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.o" "gcc" "CMakeFiles/VoxelEngine.dir/libs/imgui/imgui.cpp.o.d"
+  "/home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_draw.cpp" "CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.o" "gcc" "CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_draw.cpp.o.d"
+  "/home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_tables.cpp" "CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.o" "gcc" "CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_tables.cpp.o.d"
+  "/home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui_widgets.cpp" "CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.o" "gcc" "CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.o.d"
   "/home/brunoteixiera/Desktop/Voxels/main.cpp" "CMakeFiles/VoxelEngine.dir/main.cpp.o" "gcc" "CMakeFiles/VoxelEngine.dir/main.cpp.o.d"
   )
 

@@ -357,4 +357,10 @@ CMakeFiles/VoxelEngine.dir/main.cpp.o: \
  /usr/include/c++/12/bits/erase_if.h /usr/include/c++/12/ctime \
  /home/brunoteixiera/Desktop/Voxels/Camera.h \
  /home/brunoteixiera/Desktop/Voxels/Chunk.h \
- /home/brunoteixiera/Desktop/Voxels/InfiniteWorld.h
+ /home/brunoteixiera/Desktop/Voxels/InfiniteWorld.h \
+ /home/brunoteixiera/Desktop/Voxels/Frustum.h /usr/include/c++/12/array \
+ /usr/include/c++/12/compare \
+ /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui.h \
+ /home/brunoteixiera/Desktop/Voxels/libs/imgui/imconfig.h \
+ /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_glfw.h \
+ /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_opengl3.h
