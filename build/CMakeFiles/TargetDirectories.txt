@@ -1,0 +1,3 @@
+/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles/VoxelEngine.dir
+/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles/edit_cache.dir
+/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles/rebuild_cache.dir

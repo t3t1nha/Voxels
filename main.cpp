@@ -1,3 +1,4 @@
+// Compile --- g++ main.cpp -o voxels -lGLEW -lglfw -lGL -lGLU -lm -lXrandr -lXi -lX11 -lXxf86vm -lpthread
 #include "Common.h"
 #include "Camera.h"
 #include "Chunk.h"
