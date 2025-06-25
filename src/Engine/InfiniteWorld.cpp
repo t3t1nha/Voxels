@@ -1,6 +1,5 @@
 #include "Engine/InfiniteWorld.h"
 #include <iostream>
-
 InfiniteWorld::InfiniteWorld() {
     lastPlayerChunk = ChunkCoord(0, 0);
 }
@@ -24,6 +23,10 @@ Chunk* InfiniteWorld::getChunk(ChunkCoord coord) {
     return newChunk;
 }
 
+void InfiniteWorld::loadChunk(ChunkCoord coord) {
+    getChunk(coord);
+}
+
 void InfiniteWorld::update(const Camera& camera) {
     ChunkCoord playerChunk = camera.getCurrentChunkCoord();
     
@@ -39,7 +42,7 @@ void InfiniteWorld::loadChunksAroundPlayer(ChunkCoord playerChunk) {
         for (int z = playerChunk.z - RENDER_DISTANCE; z <= playerChunk.z + RENDER_DISTANCE; z++) {
             ChunkCoord coord(x, z);
             if (chunks.find(coord) == chunks.end()) {
-                getChunk(coord);
+                loadChunk(coord);
             }
         }
     }
@@ -61,9 +64,10 @@ void InfiniteWorld::unloadDistantChunks(ChunkCoord playerChunk) {
     for (ChunkCoord coord : chunksToRemove) {
         auto it = chunks.find(coord);
         if (it != chunks.end()) {
-            std::cout << "Unloaded chunk at (" << coord.x << ", " << coord.z << ")" << std::endl;
-            delete it->second;
-            chunks.erase(it);
+            Chunk* chunk = it->second;
+                delete chunk;
+                std::cout << "Unloaded chunk at (" << coord.x << ", " << coord.z << ")" << std::endl;
+                chunks.erase(it);
         }
     }
 }
@@ -115,6 +119,34 @@ bool InfiniteWorld::isVoxelSolidAt(int worldX, int worldY, int worldZ) {
     return chunk->voxels[localX][localY][localZ].isActive;
 }
 
+void InfiniteWorld::setVoxel(int worldX, int worldY, int worldZ, VoxelType type) {
+    int chunkX = (int)floor((float)worldX / CHUNK_SIZE);
+    int chunkZ = (int)floor((float)worldZ / CHUNK_SIZE);
+
+    ChunkCoord coord(chunkX, chunkZ);
+    auto it = chunks.find(coord);
+    if (it == chunks.end()) {
+        return; // Chunk not loaded
+    }
+
+    Chunk* chunk = it->second;
+
+    int localX = worldX - (chunkX * CHUNK_SIZE);
+    int localY = worldY;
+    int localZ = worldZ - (chunkZ * CHUNK_SIZE);
+
+    if (localX < 0 || localX >= CHUNK_SIZE ||
+        localY < 0 || localY >= CHUNK_HEIGHT || 
+        localZ < 0 || localZ >= CHUNK_SIZE) {
+        return; // Out of bounds
+    }
+
+    chunk->voxels[localX][localY][localZ] = Voxel(type);
+    chunk->meshDirty = true;
+    markNeighbourChunksDirty(coord);
+}
+
+    // Mark neighbouring chunks as dirty
 void InfiniteWorld::markNeighbourChunksDirty(ChunkCoord coord) {
     ChunkCoord neighbours[4] = {
         ChunkCoord(coord.x - 1, coord.z),
@@ -142,21 +174,30 @@ VoxelType InfiniteWorld::getVoxelTypeAt(int worldX, int worldY, int worldZ) {
     ChunkCoord coord(chunkX, chunkZ);
     auto it = chunks.find(coord);
     if (it == chunks.end()) {
+        // Debug print
+        // std::cerr << "Chunk not found for coord: " << coord.x << "," << coord.z << std::endl;
         return AIR;
     }
 
     Chunk* chunk = it->second;
+    if (!chunk) {
+        // Debug print
+        // std::cerr << "Null chunk pointer for coord: " << coord.x << "," << coord.z << std::endl;
+        return AIR;
+    }
 
     int localX = worldX - (chunkX * CHUNK_SIZE);
     int localY = worldY;
     int localZ = worldZ - (chunkZ * CHUNK_SIZE);
 
     if (localX < 0 || localX >= CHUNK_SIZE ||
-        localY < 0 || localY >= CHUNK_HEIGHT || 
+        localY < 0 || localY >= CHUNK_HEIGHT ||
         localZ < 0 || localZ >= CHUNK_SIZE) {
+        // Debug print
+        // std::cerr << "Out of bounds voxel: " << localX << "," << localY << "," << localZ << std::endl;
         return AIR;
     }
 
-    return chunk->voxels[localX][localY][localZ].isActive ? 
+    return chunk->voxels[localX][localY][localZ].isActive ?
            chunk->voxels[localX][localY][localZ].type : AIR;
 }

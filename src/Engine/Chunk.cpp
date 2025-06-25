@@ -1,6 +1,7 @@
 #include "Engine/Chunk.h"
 #include "Engine/InfiniteWorld.h"
 #include "Generation/Noise.h"
+#include "Common.h"
 #include <GL/glew.h>
 
 Chunk::Chunk(ChunkCoord c, InfiniteWorld* w)
@@ -33,12 +34,12 @@ void Chunk::generateTerrain() {
             int worldZ = coord.z * CHUNK_SIZE + z;
             
             // Biome Selection
-            float biomeNoise = perlinNoise(worldX * 0.001f, worldZ * 0.001f);
+            float biomeNoise = perlinNoise(worldX * 0.001f, worldZ * 0.001f, GLOBAL_SEED);
             int biomeIndex = int((biomeNoise + 1.0f) * 0.5f * biomeCount) % biomeCount;
             const Biome& biome = biomes[biomeIndex];
 
             //Height Generation
-            float heightNoise = perlinNoise(worldX * 0.01f, worldZ * 0.01f);
+            float heightNoise = perlinNoise(worldX * 0.01f, worldZ * 0.01f, GLOBAL_SEED);
             int height = int(biome.baseHeight + biome.heightVariation * heightNoise);
             // Clamp height to valid range
             height = std::max(1, std::min(CHUNK_HEIGHT - 1, height));
@@ -58,8 +59,8 @@ void Chunk::generateTerrain() {
             }
 
             // Forest trees (simple, only in forest biome)
-            if (biome.name == "Forest" && height < CHUNK_HEIGHT - 6) {
-                float treeNoise = perlinNoise(worldX * 0.1f, worldZ * 0.1f);
+            if (biome.name == "Mountains" || biome.name == "Forest" && height < CHUNK_HEIGHT - 6) {
+                float treeNoise = perlinNoise(worldX * 0.1f, worldZ * 0.1f, GLOBAL_SEED);
                 if (treeNoise > 0.6f) {
                     // Place a simple tree
                     for (int t = 0; t < 4; t++)
@@ -133,8 +134,6 @@ void Chunk::addFace(int x, int y, int z, int face, vec3 color) {
     }
 }
 
-// Fixed Greedy Meshing Implementation - Replace your generateMesh() method
-
 void Chunk::generateMesh() {
     vertices.clear();
     
@@ -204,10 +203,9 @@ void Chunk::generateFacesForDirection(int axis, int direction) {
         bool currentSolid = (current != AIR && current != WATER);
         bool adjacentSolid = (adjacent != AIR && adjacent != WATER);
 
-        // Don't generate faces below ground
         if (axis == 1 && direction == -1 && pos[1] == 0) {
-            mask[j * dimensions[u] + i] = AIR;
-            continue;
+        mask[j * dimensions[u] + i] = AIR;
+        continue;
         }
 
         if (currentSolid && !adjacentSolid) {
@@ -217,8 +215,9 @@ void Chunk::generateFacesForDirection(int axis, int direction) {
         }
     }
 }
-        
-        // Generate quads from mask using greedy meshing
+        // Process mask to find quads
+        // Iterate through mask to find contiguous areas of the same voxel type
+        // This will allow us to create larger quads instead of individual faces
         for (int j = 0; j < dimensions[v]; j++) {
             for (int i = 0; i < dimensions[u]; ) {
                 if (mask[j * dimensions[u] + i] != AIR) {
@@ -270,8 +269,17 @@ void Chunk::generateFacesForDirection(int axis, int direction) {
 
 void Chunk::addOptimizedQuad(int axis, int direction, int i, int j, int d, 
                             int width, int height, int u, int v, int w, VoxelType voxelType) {
-    vec3 color = getVoxelColor(voxelType);
+    // Assign different colors for each face
+    vec3 color;
+    if (axis == 1 && direction == 1) { // Top face (Y+)
+        color = getVoxelColor(voxelType) * vec3(1.0f, 1.0f, 1.0f); // Brighter
+    } else if (axis == 1 && direction == -1) { // Bottom face (Y-)
+        color = getVoxelColor(voxelType) * vec3(0.7f, 0.7f, 0.7f); // Darker
+    } else { // Sides (X/Z)
+        color = getVoxelColor(voxelType) * vec3(0.85f, 0.85f, 0.85f); // Slightly dim
+    }
 
+    // ...existing code for quad generation...
     // Base position
     int pos[3] = {0, 0, 0};
     pos[u] = i;
@@ -312,7 +320,6 @@ void Chunk::addOptimizedQuad(int axis, int direction, int i, int j, int d,
 
     // Special case for top face (Y+): ensure correct winding
     if (axis == 1 && direction == 1) {
-        // For top face, swap 1 and 3 to fix winding
         std::swap(quad[1], quad[3]);
     }
 

@@ -15,10 +15,12 @@
 
 using namespace glm;
 
+extern unsigned int GLOBAL_SEED;
+
 // Constants
 constexpr int CHUNK_SIZE = 16;
 constexpr int CHUNK_HEIGHT = 64;
-constexpr int RENDER_DISTANCE = 4;
+constexpr int RENDER_DISTANCE = 16;
 const float VOXEL_SIZE = 1.0f;
 
 // Voxel types

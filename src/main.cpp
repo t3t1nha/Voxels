@@ -9,11 +9,23 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/intersect.hpp>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <random>
+unsigned int GLOBAL_SEED = 0;
 
 #include <iostream>
+/* TODO
+    * - Implement proper error handling for OpenGL and ImGui initialization.
+    * - Add more biomes and their specific properties.
+    * - Optimize chunk rendering and loading.
+    * - Implement a more sophisticated noise generation algorithm for terrain.
+    * - Add lighting effects and shadows.
+    * - Add Atlas texture support for voxel textures.
+*/
 
 const unsigned int SCR_WIDTH = 1280;
 const unsigned int SCR_HEIGHT = 720;
@@ -42,6 +54,8 @@ void processInput(GLFWwindow* window) {
         camera.processKeyboard(4, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         camera.processKeyboard(5, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -62,14 +76,14 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void renderUI(const Camera& camera, float fps) {
-    ImGui::Begin("Debug Info");
+    ImGui::Begin("Debug Info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::Text("FPS: %.1f", fps);
     ImGui::Text("Position: (%.2f, %.2f, %.2f)", camera.position.x, camera.position.y, camera.position.z);
     ImGui::Text("Chunk: (%d, %d)", camera.getCurrentChunkCoord().x, camera.getCurrentChunkCoord().z);
 
     int playerX = static_cast<int>(camera.position.x);
     int playerZ = static_cast<int>(camera.position.z);
-    Biome biome = selectBiome(playerX, playerZ);
+    Biome biome = selectBiome(playerX, playerZ, GLOBAL_SEED);
     ImGui::Text("Biome: %s", biome.name.c_str());
 
     ImGui::End();
@@ -112,6 +126,86 @@ GLuint compileShader(const char* vertexSrc, const char* fragmentSrc) {
     return shaderProgram;
 }
 
+bool pickVoxel(const Camera& camera, InfiniteWorld& world, glm::ivec3& outBlock, glm::ivec3& outNormal, float maxDistance = 6.0f){
+    glm::vec3 origin = camera.position;
+    glm::vec3 dir = glm::normalize(camera.front);
+    glm::ivec3 lastBlock(-9999);
+    for (float t = 0.0f; t < maxDistance; t += 0.05f) {
+        glm::vec3 pos = origin + dir * t;
+        glm::ivec3 block = glm::floor(pos);
+        if (block != lastBlock) {
+            if (world.isVoxelSolidAt(block.x, block.y, block.z)) {
+                outBlock = block;
+                // Approximate normal
+                glm::vec3 prev = origin + dir * (t - 0.05f);
+                glm::ivec3 prevBlock = glm::floor(prev);
+                outNormal = prevBlock - block;
+                // Clamp normal to -1/0/1
+                outNormal.x = (outNormal.x > 0) ? 1 : (outNormal.x < 0 ? -1 : 0);
+                outNormal.y = (outNormal.y > 0) ? 1 : (outNormal.y < 0 ? -1 : 0);
+                outNormal.z = (outNormal.z > 0) ? 1 : (outNormal.z < 0 ? -1 : 0);
+                return true;
+            }
+            lastBlock = block;
+        }
+    }
+    return false;
+}
+
+void processInteraction(GLFWwindow* window, const Camera& camera, InfiniteWorld& world) {
+    static bool leftMousePressedLast = false;
+    static bool rightMousePressedLast = false;
+
+    bool leftMousePressed = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+    bool rightMousePressed = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS;
+
+    glm::ivec3 block, normal;
+    if (pickVoxel(camera, world, block, normal)) {
+        // Remove block on left click (single press)
+        if (leftMousePressed && !leftMousePressedLast) {
+            world.setVoxel(block.x, block.y, block.z, AIR);
+        }
+        // Place block on right click (single press)
+        if (rightMousePressed && !rightMousePressedLast) {
+            glm::ivec3 placePos = block + normal;
+            if (world.getVoxelTypeAt(placePos.x, placePos.y, placePos.z) == AIR) {
+                world.setVoxel(placePos.x, placePos.y, placePos.z, LOG); // Or any type you want
+            }
+        }
+    }
+    leftMousePressedLast = leftMousePressed;
+    rightMousePressedLast = rightMousePressed;
+}
+
+void loadingScreen(GLFWwindow* window, InfiniteWorld& world) {
+    ChunkCoord playerChunk = camera.getCurrentChunkCoord();
+    int totalChunks = (2 * RENDER_DISTANCE + 1) * (2 * RENDER_DISTANCE + 1);
+    int loadedChunks = 0;
+
+    for (int x = playerChunk.x - RENDER_DISTANCE; x <= playerChunk.x + RENDER_DISTANCE; ++x) {
+    for (int z = playerChunk.z - RENDER_DISTANCE; z <= playerChunk.z + RENDER_DISTANCE; ++z) {
+        world.loadChunk(ChunkCoord(x, z));
+        loadedChunks++;
+
+        // Optionally update the loading screen with progress
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        ImGui::SetNextWindowPos(ImVec2(SCR_WIDTH/2 - 100, SCR_HEIGHT/2 - 20), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(200, 60), ImGuiCond_Always);
+        ImGui::Begin("Loading", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        ImGui::Text("Loading world...");
+        ImGui::ProgressBar((float)loadedChunks / totalChunks, ImVec2(180, 20));
+        ImGui::End();
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+        }
+    }
+}
+
 const char* vertexShaderSource = R"(
 #version 330 core
 layout(location = 0) in vec3 aPos;
@@ -142,11 +236,41 @@ in vec3 Color;
 
 out vec4 FragColor;
 
+uniform vec3 lightDir = normalize(vec3(1.0, 2.0, 1.0));
+uniform vec3 viewPos;
+
 void main() {
-    float ambient = 0.5;
-    vec3 lightDir = normalize(vec3(1.0, 1.0, 0.5));
-    float diff = max(dot(Normal, lightDir), 0.0);
-    vec3 result = (ambient + diff * 0.5) * Color;
+    vec3 norm = normalize(Normal);
+
+    // Face shading: brighter top, darker bottom, normal sides
+    float faceShade = 1.0;
+    if (norm.y > 0.9)      // Top face
+        faceShade = 1.1;
+    else if (norm.y < -0.9) // Bottom face
+        faceShade = 0.7;
+    else                   // Sides
+        faceShade = 0.9;
+
+    // Ambient
+    float ambientStrength = 0.35;
+    vec3 ambient = ambientStrength * Color * faceShade;
+
+    // Diffuse
+    float diff = max(dot(norm, -lightDir), 0.0);
+    vec3 diffuse = diff * Color * faceShade;
+
+    // Specular
+    float specularStrength = 0.25;
+    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 reflectDir = reflect(lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16.0);
+    vec3 specular = specularStrength * spec * vec3(1.0);
+
+    vec3 result = ambient + diffuse + specular;
+
+    // Gamma correction
+    result = pow(result, vec3(1.0/2.2));
+
     FragColor = vec4(result, 1.0);
 }
 )";
@@ -182,6 +306,9 @@ int main() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
+    std::random_device rd;
+    GLOBAL_SEED = rd(); // Use a random seed for world generation
+
     // ImGui setup
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -196,9 +323,12 @@ int main() {
     // World
     InfiniteWorld world;
 
+    loadingScreen(window, world);
+
     // Main loop
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
+        processInteraction(window, camera, world);
 
         glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -231,6 +361,7 @@ int main() {
 
         glfwSwapBuffers(window);
         glfwPollEvents();
+        glDisable(GL_CULL_FACE);
     }
 
     // Cleanup
