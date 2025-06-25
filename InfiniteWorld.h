@@ -23,4 +23,5 @@ public:
     bool isVoxelSolidAt(int worldX, int worldY, int worldZ);
     void markNeighbourChunksDirty(ChunkCoord coord);
     int getLoadedChunkCount() const;
+    VoxelType getVoxelTypeAt(int worldX, int worldY, int worldZ);
 };

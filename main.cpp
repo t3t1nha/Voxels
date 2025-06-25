@@ -242,29 +242,24 @@ void Chunk::addFace(int x, int y, int z, int face, vec3 color) {
     }
 }
 
+// Fixed Greedy Meshing Implementation - Replace your generateMesh() method
+
 void Chunk::generateMesh() {
     vertices.clear();
     
-    for (int x = 0; x < CHUNK_SIZE; x++) {
-        for (int y = 0; y < CHUNK_HEIGHT; y++) {
-            for (int z = 0; z < CHUNK_SIZE; z++) {
-                if (!voxels[x][y][z].isActive) continue;
-                
-                vec3 color = getVoxelColor(voxels[x][y][z].type);
-                
-                if (!isVoxelSolidAtPosition(x,y,z+1)) addFace(x,y,z,0,color);
-                if (!isVoxelSolidAtPosition(x,y,z-1)) addFace(x,y,z,1,color);
-                if (!isVoxelSolidAtPosition(x-1,y,z)) addFace(x,y,z,2,color);
-                if (!isVoxelSolidAtPosition(x+1,y,z)) addFace(x,y,z,3,color);
-                if (!isVoxelSolidAtPosition(x,y-1,z)) addFace(x,y,z,4,color);
-                if (!isVoxelSolidAtPosition(x,y+1,z)) addFace(x,y,z,5,color);
-            }
-        }
-    }
+    // Generate mesh for each of the 6 face directions
+    generateFacesForDirection(0, 1);   // +X faces
+    generateFacesForDirection(0, -1);  // -X faces
+    generateFacesForDirection(1, 1);   // +Y faces
+    generateFacesForDirection(1, -1);  // -Y faces
+    generateFacesForDirection(2, 1);   // +Z faces
+    generateFacesForDirection(2, -1);  // -Z faces
     
+    // Upload vertices to GPU
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.empty() ? nullptr : &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), 
+                 vertices.empty() ? nullptr : &vertices[0], GL_STATIC_DRAW);
     
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -277,6 +272,188 @@ void Chunk::generateMesh() {
     meshGenerated = true;
     meshDirty = false;
 }
+
+void Chunk::generateFacesForDirection(int axis, int direction) {
+    // Define dimensions based on axis
+    int dimensions[3] = {CHUNK_SIZE, CHUNK_HEIGHT, CHUNK_SIZE};
+    
+    // Create coordinate mapping
+    int u, v, w;
+    if (axis == 0) { // X axis
+        u = 1; v = 2; w = 0; // u=Y, v=Z, w=X
+    } else if (axis == 1) { // Y axis
+        u = 0; v = 2; w = 1; // u=X, v=Z, w=Y
+    } else { // Z axis
+        u = 0; v = 1; w = 2; // u=X, v=Y, w=Z
+    }
+    
+    // Iterate through each slice perpendicular to the axis
+    for (int d = 0; d < dimensions[axis]; d++) {
+        // Create mask for this slice
+        VoxelType mask[CHUNK_SIZE * CHUNK_HEIGHT];
+        memset(mask, 0, sizeof(mask));
+        
+        // Fill mask - check if face should be rendered
+        for (int j = 0; j < dimensions[v]; j++) {
+            for (int i = 0; i < dimensions[u]; i++) {
+                // Build current position
+                int pos[3];
+                pos[u] = i;
+                pos[v] = j;
+                pos[w] = d;
+                
+                // Build adjacent position
+                int adjPos[3];
+                adjPos[u] = i;
+                adjPos[v] = j;
+                adjPos[w] = d + direction;
+                
+                VoxelType current = getVoxelTypeAt(pos[0], pos[1], pos[2]);
+                VoxelType adjacent = getVoxelTypeAt(adjPos[0], adjPos[1], adjPos[2]);
+                
+                // Create face if current is solid and adjacent is air
+                if (current != AIR && adjacent == AIR) {
+                    mask[j * dimensions[u] + i] = current;
+                }
+            }
+        }
+        
+        // Generate quads from mask using greedy meshing
+        for (int j = 0; j < dimensions[v]; j++) {
+            for (int i = 0; i < dimensions[u]; ) {
+                if (mask[j * dimensions[u] + i] != AIR) {
+                    VoxelType voxelType = mask[j * dimensions[u] + i];
+                    
+                    // Find width of quad
+                    int width = 1;
+                    for (int k = i + 1; k < dimensions[u]; k++) {
+                        if (mask[j * dimensions[u] + k] == voxelType) {
+                            width++;
+                        } else {
+                            break;
+                        }
+                    }
+                    
+                    // Find height of quad
+                    int height = 1;
+                    bool canExtend = true;
+                    for (int k = j + 1; k < dimensions[v] && canExtend; k++) {
+                        for (int l = i; l < i + width; l++) {
+                            if (mask[k * dimensions[u] + l] != voxelType) {
+                                canExtend = false;
+                                break;
+                            }
+                        }
+                        if (canExtend) {
+                            height++;
+                        }
+                    }
+                    
+                    // Create the quad
+                    addOptimizedQuad(axis, direction, i, j, d, width, height, u, v, w, voxelType);
+                    
+                    // Clear processed area from mask
+                    for (int dv = 0; dv < height; dv++) {
+                        for (int du = 0; du < width; du++) {
+                            mask[(j + dv) * dimensions[u] + (i + du)] = AIR;
+                        }
+                    }
+                    
+                    i += width;
+                } else {
+                    i++;
+                }
+            }
+        }
+    }
+}
+
+void Chunk::addOptimizedQuad(int axis, int direction, int i, int j, int d, 
+                            int width, int height, int u, int v, int w, VoxelType voxelType) {
+    vec3 color = getVoxelColor(voxelType);
+    
+    // Calculate the four corners of the quad
+    vec3 corners[4];
+    vec3 normal(0, 0, 0);
+    
+    // Set normal based on axis and direction
+    normal[axis] = direction;
+    
+    // Calculate world-space position offset
+    float offset = (direction > 0) ? 1.0f : 0.0f;
+    
+    // Build quad vertices based on axis
+    if (axis == 0) { // X faces
+        float x = d + worldPosition.x + offset;
+        corners[0] = vec3(x, j + worldPosition.y, i + worldPosition.z);
+        corners[1] = vec3(x, j + worldPosition.y, i + width + worldPosition.z);
+        corners[2] = vec3(x, j + height + worldPosition.y, i + width + worldPosition.z);
+        corners[3] = vec3(x, j + height + worldPosition.y, i + worldPosition.z);
+        
+        if (direction < 0) {
+            std::swap(corners[1], corners[3]);
+        }
+    } else if (axis == 1) { // Y faces
+        float y = d + worldPosition.y + offset;
+        corners[0] = vec3(i + worldPosition.x, y, j + worldPosition.z);
+        corners[1] = vec3(i + width + worldPosition.x, y, j + worldPosition.z);
+        corners[2] = vec3(i + width + worldPosition.x, y, j + height + worldPosition.z);
+        corners[3] = vec3(i + worldPosition.x, y, j + height + worldPosition.z);
+        
+        if (direction > 0) {
+            std::swap(corners[1], corners[3]);
+        }
+    } else { // Z faces
+        float z = d + worldPosition.z + offset;
+        corners[0] = vec3(i + worldPosition.x, j + worldPosition.y, z);
+        corners[1] = vec3(i + width + worldPosition.x, j + worldPosition.y, z);
+        corners[2] = vec3(i + width + worldPosition.x, j + height + worldPosition.y, z);
+        corners[3] = vec3(i + worldPosition.x, j + height + worldPosition.y, z);
+        
+        if (direction < 0) {
+            std::swap(corners[1], corners[3]);
+        }
+    }
+    
+    // Add triangles to vertex buffer
+    int triangles[2][3] = {{0, 1, 2}, {0, 2, 3}};
+    
+    for (int t = 0; t < 2; t++) {
+        for (int v = 0; v < 3; v++) {
+            vec3 vertex = corners[triangles[t][v]];
+            
+            // Position
+            vertices.push_back(vertex.x);
+            vertices.push_back(vertex.y);
+            vertices.push_back(vertex.z);
+            
+            // Normal
+            vertices.push_back(normal.x);
+            vertices.push_back(normal.y);
+            vertices.push_back(normal.z);
+            
+            // Color
+            vertices.push_back(color.r);
+            vertices.push_back(color.g);
+            vertices.push_back(color.b);
+        }
+    }
+}
+
+VoxelType Chunk::getVoxelTypeAt(int x, int y, int z) {
+    // Handle bounds checking
+    if (x < 0 || x >= CHUNK_SIZE || y < 0 || y >= CHUNK_HEIGHT || z < 0 || z >= CHUNK_SIZE) {
+        // Query adjacent chunks through world
+        int worldX = coord.x * CHUNK_SIZE + x;
+        int worldY = y;
+        int worldZ = coord.z * CHUNK_SIZE + z;
+        
+        return world->getVoxelTypeAt(worldX, worldY, worldZ);
+    }
+    
+    return voxels[x][y][z].isActive ? voxels[x][y][z].type : AIR;
+}
+
 
 void Chunk::render() {
     if (!meshGenerated || meshDirty) {
@@ -426,6 +603,33 @@ void InfiniteWorld::markNeighbourChunksDirty(ChunkCoord coord) {
 int InfiniteWorld::getLoadedChunkCount() const {
     return chunks.size();
 }
+
+VoxelType InfiniteWorld::getVoxelTypeAt(int worldX, int worldY, int worldZ) {
+    int chunkX = (int)floor((float)worldX / CHUNK_SIZE);
+    int chunkZ = (int)floor((float)worldZ / CHUNK_SIZE);
+
+    ChunkCoord coord(chunkX, chunkZ);
+    auto it = chunks.find(coord);
+    if (it == chunks.end()) {
+        return AIR;
+    }
+
+    Chunk* chunk = it->second;
+
+    int localX = worldX - (chunkX * CHUNK_SIZE);
+    int localY = worldY;
+    int localZ = worldZ - (chunkZ * CHUNK_SIZE);
+
+    if (localX < 0 || localX >= CHUNK_SIZE ||
+        localY < 0 || localY >= CHUNK_HEIGHT || 
+        localZ < 0 || localZ >= CHUNK_SIZE) {
+        return AIR;
+    }
+
+    return chunk->voxels[localX][localY][localZ].isActive ? 
+           chunk->voxels[localX][localY][localZ].type : AIR;
+}
+
 
 // Shader code
 const char* vertexShaderSource = R"(

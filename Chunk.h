@@ -24,4 +24,8 @@ public:
     void addFace(int x, int y, int z, int face, vec3 color);
     void generateMesh();
     void render();
+    void generateFacesForDirection(int axis, int direction);
+    void addOptimizedQuad(int axis, int direction, int i, int j, int d, 
+                         int width, int height, int u, int v, int w, VoxelType voxelType);
+    VoxelType getVoxelTypeAt(int x, int y, int z);
 };
