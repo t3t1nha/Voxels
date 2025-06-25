@@ -129,30 +129,6 @@ VoxelEngine/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/build
 .PHONY : VoxelEngine/fast
 
-Frustum.o: Frustum.cpp.o
-.PHONY : Frustum.o
-
-# target to build an object file
-Frustum.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/Frustum.cpp.o
-.PHONY : Frustum.cpp.o
-
-Frustum.i: Frustum.cpp.i
-.PHONY : Frustum.i
-
-# target to preprocess a source file
-Frustum.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/Frustum.cpp.i
-.PHONY : Frustum.cpp.i
-
-Frustum.s: Frustum.cpp.s
-.PHONY : Frustum.s
-
-# target to generate assembly for a file
-Frustum.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/Frustum.cpp.s
-.PHONY : Frustum.cpp.s
-
 libs/imgui/backends/imgui_impl_glfw.o: libs/imgui/backends/imgui_impl_glfw.cpp.o
 .PHONY : libs/imgui/backends/imgui_impl_glfw.o
 
@@ -297,29 +273,173 @@ libs/imgui/imgui_widgets.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/libs/imgui/imgui_widgets.cpp.s
 .PHONY : libs/imgui/imgui_widgets.cpp.s
 
-main.o: main.cpp.o
-.PHONY : main.o
+src/Engine/Camera.o: src/Engine/Camera.cpp.o
+.PHONY : src/Engine/Camera.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/main.cpp.o
-.PHONY : main.cpp.o
+src/Engine/Camera.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Engine/Camera.cpp.o
+.PHONY : src/Engine/Camera.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+src/Engine/Camera.i: src/Engine/Camera.cpp.i
+.PHONY : src/Engine/Camera.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/Engine/Camera.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Engine/Camera.cpp.i
+.PHONY : src/Engine/Camera.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+src/Engine/Camera.s: src/Engine/Camera.cpp.s
+.PHONY : src/Engine/Camera.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/Engine/Camera.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Engine/Camera.cpp.s
+.PHONY : src/Engine/Camera.cpp.s
+
+src/Engine/Chunk.o: src/Engine/Chunk.cpp.o
+.PHONY : src/Engine/Chunk.o
+
+# target to build an object file
+src/Engine/Chunk.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Engine/Chunk.cpp.o
+.PHONY : src/Engine/Chunk.cpp.o
+
+src/Engine/Chunk.i: src/Engine/Chunk.cpp.i
+.PHONY : src/Engine/Chunk.i
+
+# target to preprocess a source file
+src/Engine/Chunk.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Engine/Chunk.cpp.i
+.PHONY : src/Engine/Chunk.cpp.i
+
+src/Engine/Chunk.s: src/Engine/Chunk.cpp.s
+.PHONY : src/Engine/Chunk.s
+
+# target to generate assembly for a file
+src/Engine/Chunk.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Engine/Chunk.cpp.s
+.PHONY : src/Engine/Chunk.cpp.s
+
+src/Engine/InfiniteWorld.o: src/Engine/InfiniteWorld.cpp.o
+.PHONY : src/Engine/InfiniteWorld.o
+
+# target to build an object file
+src/Engine/InfiniteWorld.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Engine/InfiniteWorld.cpp.o
+.PHONY : src/Engine/InfiniteWorld.cpp.o
+
+src/Engine/InfiniteWorld.i: src/Engine/InfiniteWorld.cpp.i
+.PHONY : src/Engine/InfiniteWorld.i
+
+# target to preprocess a source file
+src/Engine/InfiniteWorld.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Engine/InfiniteWorld.cpp.i
+.PHONY : src/Engine/InfiniteWorld.cpp.i
+
+src/Engine/InfiniteWorld.s: src/Engine/InfiniteWorld.cpp.s
+.PHONY : src/Engine/InfiniteWorld.s
+
+# target to generate assembly for a file
+src/Engine/InfiniteWorld.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Engine/InfiniteWorld.cpp.s
+.PHONY : src/Engine/InfiniteWorld.cpp.s
+
+src/Frustum.o: src/Frustum.cpp.o
+.PHONY : src/Frustum.o
+
+# target to build an object file
+src/Frustum.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Frustum.cpp.o
+.PHONY : src/Frustum.cpp.o
+
+src/Frustum.i: src/Frustum.cpp.i
+.PHONY : src/Frustum.i
+
+# target to preprocess a source file
+src/Frustum.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Frustum.cpp.i
+.PHONY : src/Frustum.cpp.i
+
+src/Frustum.s: src/Frustum.cpp.s
+.PHONY : src/Frustum.s
+
+# target to generate assembly for a file
+src/Frustum.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Frustum.cpp.s
+.PHONY : src/Frustum.cpp.s
+
+src/Generation/Biome.o: src/Generation/Biome.cpp.o
+.PHONY : src/Generation/Biome.o
+
+# target to build an object file
+src/Generation/Biome.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Generation/Biome.cpp.o
+.PHONY : src/Generation/Biome.cpp.o
+
+src/Generation/Biome.i: src/Generation/Biome.cpp.i
+.PHONY : src/Generation/Biome.i
+
+# target to preprocess a source file
+src/Generation/Biome.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Generation/Biome.cpp.i
+.PHONY : src/Generation/Biome.cpp.i
+
+src/Generation/Biome.s: src/Generation/Biome.cpp.s
+.PHONY : src/Generation/Biome.s
+
+# target to generate assembly for a file
+src/Generation/Biome.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Generation/Biome.cpp.s
+.PHONY : src/Generation/Biome.cpp.s
+
+src/Generation/Noise.o: src/Generation/Noise.cpp.o
+.PHONY : src/Generation/Noise.o
+
+# target to build an object file
+src/Generation/Noise.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Generation/Noise.cpp.o
+.PHONY : src/Generation/Noise.cpp.o
+
+src/Generation/Noise.i: src/Generation/Noise.cpp.i
+.PHONY : src/Generation/Noise.i
+
+# target to preprocess a source file
+src/Generation/Noise.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Generation/Noise.cpp.i
+.PHONY : src/Generation/Noise.cpp.i
+
+src/Generation/Noise.s: src/Generation/Noise.cpp.s
+.PHONY : src/Generation/Noise.s
+
+# target to generate assembly for a file
+src/Generation/Noise.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/Generation/Noise.cpp.s
+.PHONY : src/Generation/Noise.cpp.s
+
+src/main.o: src/main.cpp.o
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
+
+src/main.i: src/main.cpp.i
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
 # Help Target
 help:
@@ -330,9 +450,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... VoxelEngine"
-	@echo "... Frustum.o"
-	@echo "... Frustum.i"
-	@echo "... Frustum.s"
 	@echo "... libs/imgui/backends/imgui_impl_glfw.o"
 	@echo "... libs/imgui/backends/imgui_impl_glfw.i"
 	@echo "... libs/imgui/backends/imgui_impl_glfw.s"
@@ -351,9 +468,27 @@ help:
 	@echo "... libs/imgui/imgui_widgets.o"
 	@echo "... libs/imgui/imgui_widgets.i"
 	@echo "... libs/imgui/imgui_widgets.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... src/Engine/Camera.o"
+	@echo "... src/Engine/Camera.i"
+	@echo "... src/Engine/Camera.s"
+	@echo "... src/Engine/Chunk.o"
+	@echo "... src/Engine/Chunk.i"
+	@echo "... src/Engine/Chunk.s"
+	@echo "... src/Engine/InfiniteWorld.o"
+	@echo "... src/Engine/InfiniteWorld.i"
+	@echo "... src/Engine/InfiniteWorld.s"
+	@echo "... src/Frustum.o"
+	@echo "... src/Frustum.i"
+	@echo "... src/Frustum.s"
+	@echo "... src/Generation/Biome.o"
+	@echo "... src/Generation/Biome.i"
+	@echo "... src/Generation/Biome.s"
+	@echo "... src/Generation/Noise.o"
+	@echo "... src/Generation/Noise.i"
+	@echo "... src/Generation/Noise.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 .PHONY : help
 
 

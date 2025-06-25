@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/brunoteixiera/Desktop/Voxels -I/home/brunoteixiera/Desktop/Voxels/libs/imgui -I/home/brunoteixiera/Desktop/Voxels/libs/imgui/backends
+CXX_INCLUDES = -I/home/brunoteixiera/Desktop/Voxels/include -I/home/brunoteixiera/Desktop/Voxels/include/Engine -I/home/brunoteixiera/Desktop/Voxels/include/Generation -I/home/brunoteixiera/Desktop/Voxels/libs/imgui -I/home/brunoteixiera/Desktop/Voxels/libs/imgui/backends
 
 CXX_FLAGS = -std=gnu++17
 

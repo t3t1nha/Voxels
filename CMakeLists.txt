@@ -18,13 +18,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
-# Add executable
-add_executable(VoxelEngine main.cpp Frustum.cpp)
+# --- Automatically add all .cpp files in src and subfolders ---
+file(GLOB_RECURSE SOURCES
+    src/*.cpp
+)
 
-find_package(glm REQUIRED)
-
-# --- NEW: Add ImGui source files ---
-target_sources(VoxelEngine PRIVATE
+# --- ImGui sources (if not using FetchContent above, adjust as needed) ---
+set(IMGUI_SOURCES
     libs/imgui/imgui.cpp
     libs/imgui/imgui_draw.cpp
     libs/imgui/imgui_tables.cpp
@@ -33,19 +33,28 @@ target_sources(VoxelEngine PRIVATE
     libs/imgui/backends/imgui_impl_opengl3.cpp
 )
 
-# Link libraries
-target_link_libraries(VoxelEngine
-    OpenGL::GL
-    glfw
-    GLEW::GLEW
+# Add executable
+add_executable(VoxelEngine
+    ${SOURCES}
+    ${IMGUI_SOURCES}
 )
 
-# Include directories
+# --- Include directories ---
 target_include_directories(VoxelEngine PRIVATE
     ${OPENGL_INCLUDE_DIR}
     ${GLFW3_INCLUDE_DIR}
     ${GLEW_INCLUDE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    libs/imgui
-    libs/imgui/backends
+    ${GLM_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Engine
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Generation
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui/backends
+)
+
+# --- Link libraries ---
+target_link_libraries(VoxelEngine
+    OpenGL::GL
+    glfw
+    GLEW::GLEW
 )
