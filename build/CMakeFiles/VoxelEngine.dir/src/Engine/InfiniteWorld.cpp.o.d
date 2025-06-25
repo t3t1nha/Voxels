@@ -369,4 +369,5 @@ CMakeFiles/VoxelEngine.dir/src/Engine/InfiniteWorld.cpp.o: \
  /usr/include/c++/12/pstl/execution_defs.h \
  /home/brunoteixiera/Desktop/Voxels/include/Engine/Chunk.h \
  /home/brunoteixiera/Desktop/Voxels/include/Engine/Camera.h \
- /home/brunoteixiera/Desktop/Voxels/include/Frustum.h
+ /home/brunoteixiera/Desktop/Voxels/include/Frustum.h \
+ /usr/include/c++/12/array /usr/include/c++/12/compare

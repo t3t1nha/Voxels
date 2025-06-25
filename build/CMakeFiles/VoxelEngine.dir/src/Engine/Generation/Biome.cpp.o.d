@@ -1,6 +1,7 @@
-CMakeFiles/VoxelEngine.dir/src/main.cpp.o: \
- /home/brunoteixiera/Desktop/Voxels/src/main.cpp \
+CMakeFiles/VoxelEngine.dir/src/Engine/Generation/Biome.cpp.o: \
+ /home/brunoteixiera/Desktop/Voxels/src/Engine/Generation/Biome.cpp \
  /usr/include/stdc-predef.h \
+ /home/brunoteixiera/Desktop/Voxels/include/Generation/Biomes.h \
  /home/brunoteixiera/Desktop/Voxels/include/Common.h \
  /usr/include/GL/glew.h /usr/include/c++/12/cstddef \
  /usr/include/x86_64-linux-gnu/c++/12/bits/c++config.h \
@@ -363,27 +364,4 @@ CMakeFiles/VoxelEngine.dir/src/main.cpp.o: \
  /usr/include/c++/12/bits/uniform_int_dist.h \
  /usr/include/c++/12/pstl/glue_algorithm_defs.h \
  /usr/include/c++/12/pstl/execution_defs.h \
- /home/brunoteixiera/Desktop/Voxels/include/Engine/Camera.h \
- /home/brunoteixiera/Desktop/Voxels/include/Engine/Chunk.h \
- /home/brunoteixiera/Desktop/Voxels/include/Engine/InfiniteWorld.h \
- /usr/include/c++/12/map /usr/include/c++/12/bits/stl_tree.h \
- /usr/include/c++/12/bits/stl_map.h \
- /usr/include/c++/12/bits/stl_multimap.h \
- /home/brunoteixiera/Desktop/Voxels/include/Frustum.h \
- /usr/include/c++/12/array /usr/include/c++/12/compare \
- /home/brunoteixiera/Desktop/Voxels/include/Generation/Biomes.h \
- /home/brunoteixiera/Desktop/Voxels/include/Generation/Noise.h \
- /usr/include/glm/gtx/intersect.hpp \
- /usr/include/glm/gtx/closest_point.hpp \
- /usr/include/glm/gtx/closest_point.inl \
- /usr/include/glm/gtx/vector_query.hpp \
- /usr/include/glm/gtx/vector_query.inl /usr/include/glm/gtx/intersect.inl \
- /home/brunoteixiera/Desktop/Voxels/libs/imgui/imgui.h \
- /home/brunoteixiera/Desktop/Voxels/libs/imgui/imconfig.h \
- /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_glfw.h \
- /home/brunoteixiera/Desktop/Voxels/libs/imgui/backends/imgui_impl_opengl3.h \
- /usr/include/c++/12/random /usr/include/c++/12/bits/random.h \
- /usr/include/x86_64-linux-gnu/c++/12/bits/opt_random.h \
- /usr/include/c++/12/bits/random.tcc /usr/include/c++/12/numeric \
- /usr/include/c++/12/bits/stl_numeric.h /usr/include/c++/12/bit \
- /usr/include/c++/12/pstl/glue_numeric_defs.h
+ /home/brunoteixiera/Desktop/Voxels/include/Generation/Noise.h

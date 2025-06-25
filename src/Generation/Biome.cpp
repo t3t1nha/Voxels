@@ -1,7 +1,8 @@
 #include "Generation/Biomes.h"
 #include "Generation/Noise.h"
+#include "Common.h"
 
-Biome selectBiome(int worldX, int worldZ) {
+Biome selectBiome(int worldX, int worldZ, int seed) {
     static Biome biomes[] = {
         {"Plains", GRASS, DIRT, STONE, 20.0f, 4.0f},
         {"Mountains", SNOW, GRASS, STONE, 32.0f, 18.0f},
@@ -9,7 +10,7 @@ Biome selectBiome(int worldX, int worldZ) {
         {"Forest", GRASS, DIRT, STONE, 22.0f, 5.0f}
     };
     const int biomeCount = sizeof(biomes) / sizeof(Biome);
-    float biomeNoise = perlinNoise(worldX * 0.001f, worldZ * 0.001f);
+    float biomeNoise = perlinNoise(worldX * 0.001f, worldZ * 0.001f, seed);
     int biomeIndex = int((biomeNoise + 1.0f) * 0.5f * biomeCount) % biomeCount;
     return biomes[biomeIndex];
 }

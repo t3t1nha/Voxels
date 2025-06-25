@@ -214,6 +214,8 @@ CMakeFiles/VoxelEngine.dir/src/Frustum.cpp.o: \
  /usr/include/glm/packing.hpp /usr/include/glm/detail/func_packing.inl \
  /usr/include/glm/detail/type_half.hpp \
  /usr/include/glm/detail/type_half.inl /usr/include/glm/integer.hpp \
- /usr/include/glm/detail/func_integer.inl \
+ /usr/include/glm/detail/func_integer.inl /usr/include/c++/12/array \
+ /usr/include/c++/12/compare /usr/include/c++/12/initializer_list \
+ /usr/include/c++/12/bits/range_access.h \
  /usr/include/glm/gtc/matrix_access.hpp /usr/include/glm/detail/setup.hpp \
  /usr/include/glm/gtc/matrix_access.inl

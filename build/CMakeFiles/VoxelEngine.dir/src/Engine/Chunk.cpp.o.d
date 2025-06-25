@@ -370,4 +370,5 @@ CMakeFiles/VoxelEngine.dir/src/Engine/Chunk.cpp.o: \
  /usr/include/c++/12/bits/stl_multimap.h \
  /home/brunoteixiera/Desktop/Voxels/include/Engine/Camera.h \
  /home/brunoteixiera/Desktop/Voxels/include/Frustum.h \
+ /usr/include/c++/12/array /usr/include/c++/12/compare \
  /home/brunoteixiera/Desktop/Voxels/include/Generation/Noise.h
