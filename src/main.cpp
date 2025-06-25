@@ -37,6 +37,11 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+/**
+ * @brief Processes keyboard input for camera movement and window control.
+ *
+ * Updates camera position based on movement keys (W, A, S, D, SPACE, LEFT_SHIFT) and closes the window when Escape is pressed.
+ */
 void processInput(GLFWwindow* window) {
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
@@ -58,6 +63,11 @@ void processInput(GLFWwindow* window) {
         glfwSetWindowShouldClose(window, true);
 }
 
+/**
+ * @brief Handles mouse movement to update the camera's orientation.
+ *
+ * Updates the camera's yaw and pitch based on mouse movement, enabling first-person look controls. Initializes the last mouse position on the first event to prevent sudden jumps.
+ */
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     if (firstMouse) {
         lastX = xpos;
@@ -71,10 +81,20 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     camera.processMouseMovement(xoffset, yoffset);
 }
 
+/**
+ * @brief Adjusts the OpenGL viewport when the window is resized.
+ *
+ * Updates the rendering area to match the new window dimensions.
+ */
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
+/**
+ * @brief Renders a debug UI window displaying FPS, camera position, current chunk, and biome information.
+ *
+ * Shows real-time performance and player location details using ImGui, including the biome at the player's current coordinates.
+ */
 void renderUI(const Camera& camera, float fps) {
     ImGui::Begin("Debug Info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::Text("FPS: %.1f", fps);
@@ -89,6 +109,15 @@ void renderUI(const Camera& camera, float fps) {
     ImGui::End();
 }
 
+/**
+ * @brief Compiles and links a vertex and fragment shader into an OpenGL shader program.
+ *
+ * Compiles the provided vertex and fragment shader source code, checks for compilation and linking errors, and returns the resulting shader program ID.
+ *
+ * @param vertexSrc Source code for the vertex shader.
+ * @param fragmentSrc Source code for the fragment shader.
+ * @return GLuint The OpenGL shader program ID.
+ */
 GLuint compileShader(const char* vertexSrc, const char* fragmentSrc) {
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexSrc, nullptr);
@@ -126,6 +155,16 @@ GLuint compileShader(const char* vertexSrc, const char* fragmentSrc) {
     return shaderProgram;
 }
 
+/**
+ * @brief Performs ray-based voxel picking to find the first solid voxel intersected by the camera's view.
+ *
+ * Casts a ray from the camera position along its front direction up to a maximum distance, returning the coordinates of the first solid voxel hit and the approximate normal of the face intersected.
+ *
+ * @param outBlock Receives the coordinates of the intersected voxel if found.
+ * @param outNormal Receives the normal vector of the intersected face, with components clamped to -1, 0, or 1.
+ * @param maxDistance Maximum distance to search along the ray (default is 6.0).
+ * @return true if a solid voxel is hit; false otherwise.
+ */
 bool pickVoxel(const Camera& camera, InfiniteWorld& world, glm::ivec3& outBlock, glm::ivec3& outNormal, float maxDistance = 6.0f){
     glm::vec3 origin = camera.position;
     glm::vec3 dir = glm::normalize(camera.front);
@@ -152,6 +191,11 @@ bool pickVoxel(const Camera& camera, InfiniteWorld& world, glm::ivec3& outBlock,
     return false;
 }
 
+/**
+ * @brief Handles voxel interaction based on mouse input.
+ *
+ * Detects single left or right mouse button presses to remove or place voxels in the world at the targeted location. Left-click removes the selected voxel; right-click places a voxel adjacent to the targeted face if the space is empty.
+ */
 void processInteraction(GLFWwindow* window, const Camera& camera, InfiniteWorld& world) {
     static bool leftMousePressedLast = false;
     static bool rightMousePressedLast = false;
@@ -177,6 +221,11 @@ void processInteraction(GLFWwindow* window, const Camera& camera, InfiniteWorld&
     rightMousePressedLast = rightMousePressed;
 }
 
+/**
+ * @brief Displays a loading screen while synchronously loading world chunks around the player.
+ *
+ * Loads all chunks within the render distance surrounding the player's current chunk, updating an ImGui-based progress bar to indicate loading progress. Keeps the window responsive by rendering and polling events during the loading process.
+ */
 void loadingScreen(GLFWwindow* window, InfiniteWorld& world) {
     ChunkCoord playerChunk = camera.getCurrentChunkCoord();
     int totalChunks = (2 * RENDER_DISTANCE + 1) * (2 * RENDER_DISTANCE + 1);
@@ -275,6 +324,13 @@ void main() {
 }
 )";
 
+/**
+ * @brief Entry point for the voxel engine application.
+ *
+ * Initializes the windowing system, OpenGL context, ImGui UI, and world state. Handles the main application loop, including input processing, camera movement, world updates, rendering, and UI display. Cleans up all resources on exit.
+ *
+ * @return int Exit status code (0 on success, negative on failure).
+ */
 int main() {
     // GLFW init
     if (!glfwInit()) {

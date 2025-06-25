@@ -5,6 +5,10 @@
 #include "Engine/Camera.h"
 #include "Frustum.h"
 
+/**
+ * Loads the chunk at the specified chunk coordinates into memory.
+ * @param coord The coordinates of the chunk to load.
+ */
 class InfiniteWorld {
 public:
     std::map<ChunkCoord, Chunk*> chunks;

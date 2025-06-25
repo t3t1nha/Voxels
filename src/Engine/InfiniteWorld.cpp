@@ -1,5 +1,8 @@
 #include "Engine/InfiniteWorld.h"
 #include <iostream>
+/**
+ * @brief Constructs an InfiniteWorld and initializes the last known player chunk coordinate to (0, 0).
+ */
 InfiniteWorld::InfiniteWorld() {
     lastPlayerChunk = ChunkCoord(0, 0);
 }
@@ -11,6 +14,14 @@ InfiniteWorld::~InfiniteWorld() {
     chunks.clear();
 }
 
+/**
+ * @brief Retrieves the chunk at the specified coordinate, creating it if necessary.
+ *
+ * If the chunk does not exist, a new chunk is created, added to the collection, and neighboring chunks are marked as dirty.
+ *
+ * @param coord The coordinate of the chunk to retrieve.
+ * @return Pointer to the chunk at the given coordinate.
+ */
 Chunk* InfiniteWorld::getChunk(ChunkCoord coord) {
     auto it = chunks.find(coord);
     if (it != chunks.end()) {
@@ -23,10 +34,20 @@ Chunk* InfiniteWorld::getChunk(ChunkCoord coord) {
     return newChunk;
 }
 
+/**
+ * @brief Ensures the chunk at the specified coordinate is loaded.
+ *
+ * If the chunk does not exist, it is created and added to the world.
+ */
 void InfiniteWorld::loadChunk(ChunkCoord coord) {
     getChunk(coord);
 }
 
+/**
+ * @brief Updates the world state based on the player's current chunk position.
+ *
+ * If the player has moved to a new chunk, loads nearby chunks within the render distance and unloads distant chunks.
+ */
 void InfiniteWorld::update(const Camera& camera) {
     ChunkCoord playerChunk = camera.getCurrentChunkCoord();
     
@@ -37,6 +58,13 @@ void InfiniteWorld::update(const Camera& camera) {
     }
 }
 
+/**
+ * @brief Loads all chunks within the render distance around the specified player chunk.
+ *
+ * Ensures that every chunk within a square area centered on the player's current chunk coordinate and extending `RENDER_DISTANCE` units in each direction is loaded. Missing chunks are created and loaded as needed.
+ *
+ * @param playerChunk The chunk coordinate representing the player's current location.
+ */
 void InfiniteWorld::loadChunksAroundPlayer(ChunkCoord playerChunk) {
     for (int x = playerChunk.x - RENDER_DISTANCE; x <= playerChunk.x + RENDER_DISTANCE; x++) {
         for (int z = playerChunk.z - RENDER_DISTANCE; z <= playerChunk.z + RENDER_DISTANCE; z++) {
@@ -48,6 +76,11 @@ void InfiniteWorld::loadChunksAroundPlayer(ChunkCoord playerChunk) {
     }
 }
 
+/**
+ * @brief Unloads chunks that are outside the allowed distance from the player.
+ *
+ * Identifies and removes all chunks whose coordinates are farther than `RENDER_DISTANCE + 2` from the player's current chunk position. Frees associated memory and removes them from the internal chunk map.
+ */
 void InfiniteWorld::unloadDistantChunks(ChunkCoord playerChunk) {
     std::vector<ChunkCoord> chunksToRemove;
     
@@ -94,6 +127,16 @@ void InfiniteWorld::render(const glm::mat4& viewProj) {
     }
 }
 
+/**
+ * @brief Determines if the voxel at the specified world coordinates is solid (active).
+ *
+ * Converts world coordinates to the corresponding chunk and local voxel coordinates. Returns false if the chunk is not loaded or the coordinates are out of bounds; otherwise, returns true if the voxel is active (solid).
+ *
+ * @param worldX The X coordinate in world space.
+ * @param worldY The Y coordinate in world space.
+ * @param worldZ The Z coordinate in world space.
+ * @return true if the voxel is solid (active); false otherwise.
+ */
 bool InfiniteWorld::isVoxelSolidAt(int worldX, int worldY, int worldZ) {
     int chunkX = (int)floor((float)worldX / CHUNK_SIZE);
     int chunkZ = (int)floor((float)worldZ / CHUNK_SIZE);
@@ -119,6 +162,16 @@ bool InfiniteWorld::isVoxelSolidAt(int worldX, int worldY, int worldZ) {
     return chunk->voxels[localX][localY][localZ].isActive;
 }
 
+/**
+ * @brief Sets the voxel type at the specified world coordinates.
+ *
+ * Updates the voxel at the given world position if the corresponding chunk is loaded and the coordinates are within bounds. Marks the affected chunk and its neighbors for mesh updates.
+ *
+ * @param worldX The X coordinate in world space.
+ * @param worldY The Y coordinate in world space.
+ * @param worldZ The Z coordinate in world space.
+ * @param type The voxel type to set at the specified location.
+ */
 void InfiniteWorld::setVoxel(int worldX, int worldY, int worldZ, VoxelType type) {
     int chunkX = (int)floor((float)worldX / CHUNK_SIZE);
     int chunkZ = (int)floor((float)worldZ / CHUNK_SIZE);
@@ -146,7 +199,13 @@ void InfiniteWorld::setVoxel(int worldX, int worldY, int worldZ, VoxelType type)
     markNeighbourChunksDirty(coord);
 }
 
-    // Mark neighbouring chunks as dirty
+    /**
+ * @brief Marks the mesh of neighboring chunks as dirty.
+ *
+ * Sets the `meshDirty` flag to true for each of the four adjacent chunks (left, right, front, back) of the specified chunk coordinate, if those chunks are currently loaded.
+ *
+ * @param coord The coordinate of the chunk whose neighbors will be marked dirty.
+ */
 void InfiniteWorld::markNeighbourChunksDirty(ChunkCoord coord) {
     ChunkCoord neighbours[4] = {
         ChunkCoord(coord.x - 1, coord.z),
@@ -167,6 +226,16 @@ int InfiniteWorld::getLoadedChunkCount() const {
     return chunks.size();
 }
 
+/**
+ * @brief Returns the voxel type at the specified world coordinates.
+ *
+ * If the corresponding chunk is not loaded, the chunk pointer is null, or the coordinates are out of bounds, returns AIR. Otherwise, returns the type of the voxel if it is active; returns AIR if inactive.
+ *
+ * @param worldX The X coordinate in world space.
+ * @param worldY The Y coordinate in world space.
+ * @param worldZ The Z coordinate in world space.
+ * @return VoxelType The type of the voxel at the given coordinates, or AIR if not present or inactive.
+ */
 VoxelType InfiniteWorld::getVoxelTypeAt(int worldX, int worldY, int worldZ) {
     int chunkX = (int)floor((float)worldX / CHUNK_SIZE);
     int chunkZ = (int)floor((float)worldZ / CHUNK_SIZE);
