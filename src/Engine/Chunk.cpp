@@ -4,6 +4,11 @@
 #include "Common.h"
 #include <GL/glew.h>
 
+/**
+ * @brief Constructs a chunk at the specified coordinates and initializes its terrain and rendering resources.
+ *
+ * Initializes chunk coordinates, associates the chunk with the world, computes its world-space position, generates terrain data, and creates OpenGL vertex array and buffer objects for mesh rendering.
+ */
 Chunk::Chunk(ChunkCoord c, InfiniteWorld* w)
     : coord(c), world(w), meshGenerated(false), meshDirty(true) {
     worldPosition = vec3(coord.x * CHUNK_SIZE, 0, coord.z * CHUNK_SIZE);
@@ -17,6 +22,11 @@ Chunk::~Chunk() {
     glDeleteBuffers(1, &VBO);
 }
 
+/**
+ * @brief Generates terrain voxel data for the chunk using biome-based Perlin noise.
+ *
+ * Assigns voxel types for each position in the chunk based on biome selection and height variation determined by seeded Perlin noise. Supports multiple biomes (Plains, Mountains, Desert, Forest) with distinct surface, subsurface, and filler blocks. Fills lower elevations with water where appropriate. In Forest and Mountains biomes, probabilistically places simple trees composed of log and leaf voxels.
+ */
 void Chunk::generateTerrain() {
 
     // Define Biomes
@@ -99,6 +109,17 @@ vec3 Chunk::getVoxelColor(VoxelType type) {
     }
 }
 
+/**
+ * @brief Adds the vertex data for a single voxel face at the specified position and color.
+ *
+ * Generates and appends the vertices, normals, and color attributes for one face of a voxel to the chunk's vertex buffer, using the given local coordinates, face direction, and color.
+ *
+ * @param x Local X coordinate within the chunk.
+ * @param y Local Y coordinate within the chunk.
+ * @param z Local Z coordinate within the chunk.
+ * @param face Index of the face direction (0=front, 1=back, 2=left, 3=right, 4=bottom, 5=top).
+ * @param color RGB color to apply to the face.
+ */
 void Chunk::addFace(int x, int y, int z, int face, vec3 color) {
     float vx = x + worldPosition.x;
     float vy = y + worldPosition.y;
@@ -134,6 +155,11 @@ void Chunk::addFace(int x, int y, int z, int face, vec3 color) {
     }
 }
 
+/**
+ * @brief Generates and uploads the optimized mesh for the chunk's visible voxel faces.
+ *
+ * Clears existing vertex data, constructs mesh geometry for all exposed voxel faces using greedy meshing, and uploads the resulting vertex buffer to the GPU. Updates mesh state flags to indicate the mesh is current.
+ */
 void Chunk::generateMesh() {
     vertices.clear();
     
@@ -163,6 +189,16 @@ void Chunk::generateMesh() {
     meshDirty = false;
 }
 
+/**
+ * @brief Generates optimized mesh faces for a given axis and direction using greedy meshing.
+ *
+ * Identifies contiguous regions of visible voxel faces along the specified axis and direction,
+ * and creates larger quads instead of individual faces to optimize mesh geometry.
+ * Only faces between solid voxels and non-solid (air or water) voxels are considered.
+ *
+ * @param axis The axis (0=X, 1=Y, 2=Z) perpendicular to the faces being generated.
+ * @param direction The direction along the axis (1 for positive, -1 for negative) for face orientation.
+ */
 void Chunk::generateFacesForDirection(int axis, int direction) {
     // Define dimensions based on axis
     int dimensions[3] = {CHUNK_SIZE, CHUNK_HEIGHT, CHUNK_SIZE};
@@ -267,6 +303,23 @@ void Chunk::generateFacesForDirection(int axis, int direction) {
     }
 }
 
+/**
+ * @brief Adds an optimized quad representing a contiguous face of voxels to the mesh.
+ *
+ * Generates vertex data for a rectangular face (quad) of the specified voxel type, oriented along the given axis and direction, with color shading based on face orientation. The quad is defined by its position, width, and height, and is added to the chunk's vertex buffer as two triangles.
+ *
+ * @param axis The axis normal to the face (0=X, 1=Y, 2=Z).
+ * @param direction The direction along the axis (1 for positive, -1 for negative).
+ * @param i Starting coordinate along the first in-plane axis.
+ * @param j Starting coordinate along the second in-plane axis.
+ * @param d Coordinate along the axis normal to the face.
+ * @param width Width of the quad along the first in-plane axis.
+ * @param height Height of the quad along the second in-plane axis.
+ * @param u Index of the first in-plane axis.
+ * @param v Index of the second in-plane axis.
+ * @param w Index of the axis normal to the face.
+ * @param voxelType The type of voxel for color assignment.
+ */
 void Chunk::addOptimizedQuad(int axis, int direction, int i, int j, int d, 
                             int width, int height, int u, int v, int w, VoxelType voxelType) {
     // Assign different colors for each face

@@ -2,6 +2,16 @@
 #include "Generation/Noise.h"
 #include "Common.h"
 
+/**
+ * @brief Selects a biome based on world coordinates and a seed value.
+ *
+ * Uses Perlin noise to deterministically choose a biome from a predefined set, ensuring spatial and seed-based variation in biome distribution.
+ *
+ * @param worldX The X coordinate in the world.
+ * @param worldZ The Z coordinate in the world.
+ * @param seed The seed value influencing biome selection.
+ * @return Biome The biome corresponding to the given coordinates and seed.
+ */
 Biome selectBiome(int worldX, int worldZ, int seed) {
     static Biome biomes[] = {
         {"Plains", GRASS, DIRT, STONE, 20.0f, 4.0f},
