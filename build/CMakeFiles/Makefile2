@@ -81,12 +81,12 @@ clean: CMakeFiles/VoxelEngine.dir/clean
 CMakeFiles/VoxelEngine.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/VoxelEngine.dir/build.make CMakeFiles/VoxelEngine.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target VoxelEngine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/brunoteixiera/Desktop/Voxels/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14 "Built target VoxelEngine"
 .PHONY : CMakeFiles/VoxelEngine.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/VoxelEngine.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/brunoteixiera/Desktop/Voxels/build/CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/brunoteixiera/Desktop/Voxels/build/CMakeFiles 14
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/VoxelEngine.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/brunoteixiera/Desktop/Voxels/build/CMakeFiles 0
 .PHONY : CMakeFiles/VoxelEngine.dir/rule

@@ -10,13 +10,15 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
+#include <string>
+#include <algorithm>
 
 using namespace glm;
 
 // Constants
-const int CHUNK_SIZE = 16;
-const int CHUNK_HEIGHT = 64;
-const int RENDER_DISTANCE = 20;
+constexpr int CHUNK_SIZE = 16;
+constexpr int CHUNK_HEIGHT = 64;
+constexpr int RENDER_DISTANCE = 4;
 const float VOXEL_SIZE = 1.0f;
 
 // Voxel types
@@ -26,17 +28,32 @@ enum VoxelType {
     GRASS = 2,
     DIRT = 3,
     SAND = 4,
-    WATER = 5
+    WATER = 5,
+    SNOW = 6,
+    LOG = 7,
+    LEAVES = 8
+};
+
+struct Biome {
+    std::string name;
+    VoxelType surface;
+    VoxelType subsurface;
+    VoxelType filler;
+    float baseHeight;
+    float heightVariation;
 };
 
 // Chunk coordinate structure
 struct ChunkCoord {
     int x, z;
     
-    ChunkCoord(int x = 0, int z = 0) : x(x), z(z) {}
+    ChunkCoord(int x_ = 0, int z_ = 0) : x(x_), z(z_) {}
     
     bool operator==(const ChunkCoord& other) const {
         return x == other.x && z == other.z;
+    }
+    bool operator<(const ChunkCoord& other) const {
+        return x < other.x || (x == other.x && z < other.z);
     }
 };
 
